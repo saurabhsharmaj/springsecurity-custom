@@ -8,14 +8,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     public static final String SPRING_SECURITY_FORM_ROLE_KEY = "role";
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) 
-        throws AuthenticationException {    	
+        throws AuthenticationException {
+
         if (!request.getMethod().equals("POST")) {
             throw new AuthenticationServiceException("Authentication method not supported: " 
               + request.getMethod());
@@ -29,7 +29,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     private CustomAuthenticationToken getAuthRequest(HttpServletRequest request) {
         String username = obtainUsername(request);
         String password = obtainPassword(request);
-        String role = obtainRole(request);
+        String domain = obtainDomain(request);
 
         if (username == null) {
             username = "";
@@ -37,14 +37,14 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         if (password == null) {
             password = "";
         }
-        if (role == null) {
-            role = "";
+        if (domain == null) {
+            domain = "";
         }
 
-        return new CustomAuthenticationToken(username, password, role);
+        return new CustomAuthenticationToken(username, password, domain);
     }
 
-    private String obtainRole(HttpServletRequest request) {
+    private String obtainDomain(HttpServletRequest request) {
         return request.getParameter(SPRING_SECURITY_FORM_ROLE_KEY);
     }
 }
