@@ -81,6 +81,17 @@
 							
 							<input type="password" name="password" placeholder="password" class="form-control" >
 						</div>
+						
+						<!-- Role -->
+						<div style="margin-bottom: 25px" class="input-group">
+							<span class="input-group-addon"><i class="glyphicon glyphicon-cog"></i></span> 
+							
+							<select name="role" class="form-control" >
+								<option value="Employee" >Employee</option>
+								<option value="Manager">Manager</option>
+								<option value="Admin">Admin</option>
+							</select>
+						</div>
 
 						<!-- Login/Submit Button -->
 						<div style="margin-top: 10px" class="form-group">						
