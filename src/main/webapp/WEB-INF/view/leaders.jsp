@@ -20,6 +20,12 @@
 
 <a href="${pageContext.request.contextPath}/">Back to Home Page</a>
 
+<form:form action="${pageContext.request.contextPath}/logout" 
+			   method="POST">
+	
+		<input type="submit" value="Logout" />
+	
+	</form:form>
 </body>
 
 </html>

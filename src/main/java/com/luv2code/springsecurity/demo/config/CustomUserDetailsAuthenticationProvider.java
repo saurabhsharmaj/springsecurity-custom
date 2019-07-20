@@ -13,6 +13,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class CustomUserDetailsAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
+	CustomUserDetailsService userDetailsService;
+	
+	public CustomUserDetailsAuthenticationProvider(CustomUserDetailsService userDetailsService) {
+		this.userDetailsService = userDetailsService;
+	}
+
 	@Override
 	protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
 
@@ -27,20 +33,15 @@ public class CustomUserDetailsAuthenticationProvider extends AbstractUserDetails
 		CustomAuthenticationToken auth = (CustomAuthenticationToken) authentication;		
 		String password=auth.getCredentials().toString();
 		String role = auth.getRole();
+		UserDetails user;
 		System.out.println("username:"+username+" password:"+password+" role:"+role);
 		if (username == null|| password==null || role == null) {
 			return null;
 		} else {
-			Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-			authorities.add(getAuthority(role));			
-			UserDetails user = new User(username, role,password, true, true, true, true, authorities);
+			user = userDetailsService.validateUserDetails(username,password, role);			
+			//UserDetails user = new User(username, role,password, true, true, true, true, authorities);
 			return user;
 		}
 		
 	}
-
-	private GrantedAuthority getAuthority(String role) {		
-		return new SimpleGrantedAuthority("ROLE_"+role.toUpperCase());
-	}
-
 }
